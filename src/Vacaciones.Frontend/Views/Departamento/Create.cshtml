@@ -1,0 +1,30 @@
+@model Vacaciones.Frontend.Models.Departamentos.CreateDepartamentoViewModel
+@{
+    ViewData["Title"] = "Crear Departamento";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!-- Mensaje de validación si existe -->
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+<!-- Formulario de creación -->
+<form method="post" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Nombre">Nombre</label>
+        <input class="form-control" asp-for="Nombre" placeholder="Nombre del departamento"/>
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+
+<a href="@Url.Action("Index", "Departamento")" class="btn btn-secondary mt-2">Volver a la lista</a>

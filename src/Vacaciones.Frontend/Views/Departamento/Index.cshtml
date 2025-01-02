@@ -1,0 +1,38 @@
+@model IEnumerable<Vacaciones.Frontend.Models.Departamentos.DepartamentoViewModel>
+
+
+@{
+    ViewData["Title"] = "Lista de Departamentos";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a asp-action="Create" >Nuevo departamento</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var departamento in Model)
+        {
+            <tr>
+                <td>@departamento.Id</td>
+                <td>@departamento.Nombre</td>
+                <td>
+                    <!-- Botón para editar -->
+                    <a asp-action="Edit" asp-route-id="@departamento.Id" class="btn btn-warning btn-sm">Editar</a>
+
+                    <!-- Botón para eliminar -->
+                    <form asp-action="Delete" asp-route-id="@departamento.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
