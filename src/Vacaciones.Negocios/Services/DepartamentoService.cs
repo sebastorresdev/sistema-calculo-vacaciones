@@ -1,41 +1,38 @@
 using Vacaciones.Datos.Entities;
-using Vacaciones.Datos.Repositories;
+using Vacaciones.Datos.Interfaces;
+using Vacaciones.Negocios.Interfaces;
 
 namespace Vacaciones.Negocios.Services;
 
-public class DepartamentoService
+public class DepartamentoService(IDepartamentoRepository departamentoRepository) : IDepartamentoService
 {
-    private readonly DepartamentoRepository _departamentoRepository;
+    private readonly IDepartamentoRepository _departamentoRepository = departamentoRepository;
 
-    public DepartamentoService(DepartamentoRepository departamentoRepository)
-        => _departamentoRepository = departamentoRepository;
+    public IEnumerable<Departamento> GetAll() 
+        => _departamentoRepository.GetAll();
 
-    public IEnumerable<Departamento> GetDepartamentos() => _departamentoRepository.GetAll(); 
+    public Departamento? GetById(int id) 
+        => _departamentoRepository.GetById(id);
 
-    public Departamento? GetDepartamentoById(int id) => _departamentoRepository.GetById(id);
-
-    public void AddDepartamento(Departamento departamento)
+    public void Save(Departamento departamento)
     {
-        if (departamento == null)
-            throw new ArgumentNullException(nameof(departamento));
+        ArgumentNullException.ThrowIfNull(departamento);
 
-        _departamentoRepository.Add(departamento);
+        _departamentoRepository.Save(departamento);
     }
 
-    public void UpdateDepartamento(Departamento departamento)
+    public void Update(Departamento departamento)
     {
-        if (departamento == null)
-            throw new ArgumentNullException(nameof(departamento));
+        ArgumentNullException.ThrowIfNull(departamento);
 
         _departamentoRepository.Update(departamento);
     }
 
-    public void DeleteDepartamento(int id)
+    public void Delete(int id)
     {
         var departamento = _departamentoRepository.GetById(id);
 
-        if (departamento == null)
-            throw new ArgumentNullException(nameof(departamento));
+        ArgumentNullException.ThrowIfNull(departamento);
 
         _departamentoRepository.Delete(id);
     }

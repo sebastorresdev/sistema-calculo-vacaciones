@@ -6,10 +6,13 @@ public class Empleado
     public string NombreCompleto { get; set; } = null!;
     public string ApellidoPaterno { get; set; } = null!;
     public string? ApellidoMaterno { get; set; }
-    public DateTime FechaIngreso { get; set; }
     public DateTime FechaNacimiento { get; set; }
+    public DateTime FechaIngreso { get; set; }
     public string CorreoElectronico { get; set; } = null!;
     public int IdDepartamento { get; set; }
     public int IdTipoEmpleado { get; set; }
     public bool EstaActivo { get; set; }
+
+    public virtual string? NombreTipoEmpleado { get; set; }
+    public virtual string? NombreDepartamento { get; set; }
 }

@@ -1,32 +1,99 @@
-@model Vacaciones.Frontend.Models.Departamentos.EditDepartamentoViewModel
+@model Vacaciones.Frontend.Models.Departamento.EditDepartamentoViewModel
+
 @{
     ViewData["Title"] = "Editar Departamento";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<!-- Mensaje de validación si existe -->
-@if (ViewData.ModelState.ErrorCount > 0)
-{
-    <div class="alert alert-danger">
-        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-        {
-            <p>@error.ErrorMessage</p>
-        }
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <h1 class="display-4 text-primary">@ViewData["Title"]</h1>
+            <p class="lead text-muted">Modifica la información del departamento seleccionado.</p>
+        </div>
     </div>
+
+    <!-- Mensajes de error -->
+    @if (ViewData.ModelState.ErrorCount > 0)
+    {
+        <div class="alert alert-danger mt-4">
+            <h5 class="alert-heading">Errores encontrados:</h5>
+            <ul class="mb-0">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <!-- Botón de retorno -->
+    <div class="mt-4 mb-5">
+        <a href="@Url.Action("Index", "Departamento")" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Retornar atrás
+        </a>
+    </div>
+
+    <!-- Formulario -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0">Formulario de Edición</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" asp-action="Edit">
+                        <!-- Campo oculto para el Id -->
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Campo: Nombre -->
+                        <div class="mb-4">
+                            <label asp-for="Nombre" class="form-label fw-semibold">Nombre del Departamento</label>
+                            <input class="form-control @((ViewData.ModelState["Nombre"]?.Errors.Count > 0) ? "is-invalid" : "")"
+                                   type="text"
+                                   placeholder="Ejemplo: Recursos Humanos"
+                                   asp-for="Nombre" />
+                            <span asp-validation-for="Nombre" class="invalid-feedback"></span>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <!-- Botón de guardar cambios -->
+                            <button type="submit" class="btn btn-success btn-lg fw-semibold">
+                                <i class="fa-regular fa-circle-check"></i> Guardar cambios
+                            </button>
+
+                            <!-- Botón de cancelar -->
+                            <a href="@Url.Action("Index", "Departamento")" class="btn btn-outline-secondary">
+                                <i class="fa-solid fa-times"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Inicialización de validación de formulario
+        (() => {
+            'use strict'
+
+            // Obtener todos los formularios que requieren validación
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Agregar un evento de validación personalizado
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 }
-
-<!-- Formulario de creación -->
-<form method="post" asp-action="Edit">
-    <div class="form-group">
-        <label type="hidden" asp-for="Id">ID</label>
-        <input class="form-control-plaintext" value="@Model.Id" readonly />
-        <label asp-for="Nombre">Nombre</label>
-        <input type="text" class="form-control" asp-for="Nombre" placeholder="Nombre del departamento" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
-
-<a href="@Url.Action("Index", "Departamento")" class="btn btn-secondary mt-2">Volver a la lista</a>

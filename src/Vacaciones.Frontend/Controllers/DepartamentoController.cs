@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Vacaciones.Datos.Entities;
-using Vacaciones.Frontend.Models.Departamentos;
-using Vacaciones.Negocios.Services;
+using Vacaciones.Frontend.Mappings;
+using Vacaciones.Frontend.Models.Departamento;
+using Vacaciones.Negocios.Interfaces;
 
 namespace Vacaciones.Frontend.Controllers;
 
 public class DepartamentoController : Controller
 {
-    private readonly DepartamentoService _departamentoService;
+    private readonly IDepartamentoService _departamentoService;
 
-    public DepartamentoController(DepartamentoService departamentoService)
+    public DepartamentoController(IDepartamentoService departamentoService)
     {
         _departamentoService = departamentoService;
     }
@@ -17,7 +18,9 @@ public class DepartamentoController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        var viewModels = _departamentoService.GetDepartamentos().Select(d => new DepartamentoViewModel(d.Id, d.Nombre)).ToList();
+        var viewModels = _departamentoService.GetAll()
+            .Select(d => d.ToDepartamentoViewModel())
+            .ToList();
 
         return View(viewModels);
     }
@@ -32,30 +35,26 @@ public class DepartamentoController : Controller
     {
         if (ModelState.IsValid)
         {
-            Departamento departamento = new()
-            {
-                Nombre = viewModel.Nombre
-            };
-            _departamentoService.AddDepartamento(departamento);
-            return RedirectToAction("Index");
+            Departamento departamento = viewModel.ToDepartamento();
+
+            _departamentoService.Save(departamento);
+
+            return RedirectToAction(nameof(Index));
         }
+
         return View(viewModel);
     }
 
     public IActionResult Edit(int id)
     {
-        var departamento = _departamentoService.GetDepartamentoById(id);
+        var departamento = _departamentoService.GetById(id);
 
         if (departamento == null)
         {
             return NotFound();
         }
 
-        var viewModel = new EditDepartamentoViewModel
-        {
-            Id = departamento.Id,
-            Nombre = departamento.Nombre
-        };
+        var viewModel = departamento.ToEditDepartamentoViewModel();
 
         return View(viewModel);
     }
@@ -65,14 +64,21 @@ public class DepartamentoController : Controller
     {
         if (ModelState.IsValid)
         {
-            Departamento departamento = new()
-            {
-                Id = viewModel.Id,
-                Nombre = viewModel.Nombre
-            };
-            _departamentoService.UpdateDepartamento(departamento);
-            return RedirectToAction("Index");
+            Departamento departamento = viewModel.ToDepartamento();
+            
+            _departamentoService.Update(departamento);
+
+            return RedirectToAction(nameof(Index));
         }
+
         return View(viewModel);
+    }
+
+    [HttpPost]
+    public IActionResult Delete(int id)
+    {
+        _departamentoService.Delete(id);
+
+        return RedirectToAction(nameof(Index));
     }
 }

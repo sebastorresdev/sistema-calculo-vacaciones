@@ -1,0 +1,125 @@
+﻿@model Vacaciones.Frontend.Models.Empleado.CreateEmpleadoViewModel
+
+@{
+    ViewData["Title"] = "Crear Empleado";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Create" method="post" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <!-- Nombre -->
+                <div class="col-md-6">
+                    <label asp-for="Nombre" class="form-label fw-bold">Nombre</label>
+                    <input asp-for="Nombre" class="form-control" placeholder="Ingrese el nombre del empleado" required />
+                    <div class="invalid-feedback">
+                        Por favor, ingrese un nombre válido.
+                    </div>
+                </div>
+
+                <!-- Apellido Paterno -->
+                <div class="col-md-6">
+                    <label asp-for="ApellidoPaterno" class="form-label fw-bold">Apellido Paterno</label>
+                    <input asp-for="ApellidoPaterno" class="form-control" placeholder="Ingrese el apellido paterno" required />
+                    <div class="invalid-feedback">
+                        Por favor, ingrese un apellido paterno válido.
+                    </div>
+                </div>
+
+                <!-- Apellido Materno -->
+                <div class="col-md-6">
+                    <label asp-for="ApellidoMaterno" class="form-label fw-bold">Apellido Materno</label>
+                    <input asp-for="ApellidoMaterno" class="form-control" placeholder="Ingrese el apellido materno (opcional)" />
+                    <div class="invalid-feedback">
+                        Por favor, ingrese un apellido materno válido.
+                    </div>
+                </div>
+
+                <!-- Fecha de Ingreso -->
+                <div class="col-md-6">
+                    <label asp-for="FechaIngreso" class="form-label fw-bold">Fecha de Ingreso</label>
+                    <input asp-for="FechaIngreso" type="date" class="form-control" required />
+                    <div class="invalid-feedback">
+                        Por favor, seleccione una fecha de ingreso válida.
+                    </div>
+                </div>
+
+                <!-- Fecha de Nacimiento -->
+                <div class="col-md-6">
+                    <label asp-for="FechaNacimiento" class="form-label fw-bold">Fecha de Nacimiento</label>
+                    <input asp-for="FechaNacimiento" type="date" class="form-control" required />
+                    <div class="invalid-feedback">
+                        Por favor, seleccione una fecha de nacimiento válida.
+                    </div>
+                </div>
+
+                <!-- Departamento -->
+                <div class="col-md-6">
+                    <label asp-for="IdDepartamento" class="form-label fw-bold">Departamento</label>
+                    <select asp-for="IdDepartamento" class="form-select" asp-items="ViewBag.Departamentos" required>
+                        <option value="">Seleccione un departamento</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Por favor, seleccione un departamento.
+                    </div>
+                </div>
+
+                <!-- Tipo de Empleado -->
+                <div class="col-md-6">
+                    <label asp-for="IdTipoEmpleado" class="form-label fw-bold">Tipos Empleados</label>
+                    <select asp-for="IdTipoEmpleado" class="form-select" asp-items="ViewBag.TiposEmpleados" required>
+                        <option value="">Seleccione el tipo de empleado</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Por favor, seleccione un tipo de empleado.
+                    </div>
+                </div>
+
+                <!-- Correo -->
+                <div class="col-md-6">
+                    <label asp-for="Correo" class="form-label fw-bold">Correo Electrónico</label>
+                    <input asp-for="Correo" type="email" class="form-control" placeholder="Ingrese el correo electrónico" required />
+                    <div class="invalid-feedback">
+                        Por favor, ingrese un correo electrónico válido.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-2"></i>Guardar
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Regresar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Validación con Bootstrap
+        (() => {
+            'use strict'
+
+            // Obtener todos los formularios que requieren validación
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Agregar un evento de validación personalizado
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Vacaciones.Frontend.Models.Departamentos;
+namespace Vacaciones.Frontend.Models.Departamento;
 
 public class EditDepartamentoViewModel
 {

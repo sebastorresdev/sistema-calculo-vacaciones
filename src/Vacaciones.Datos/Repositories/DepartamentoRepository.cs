@@ -1,14 +1,15 @@
 using Microsoft.Data.SqlClient;
 using Vacaciones.Datos.Data;
 using Vacaciones.Datos.Entities;
+using Vacaciones.Datos.Interfaces;
 
 namespace Vacaciones.Datos.Repositories;
 
-public class DepartamentoRepository
+public class DepartamentoRepository : IDepartamentoRepository
 {
-    private readonly VacacionesDbConnection _connection;
+    private readonly Connection _connection;
 
-    public DepartamentoRepository(VacacionesDbConnection connection)
+    public DepartamentoRepository(Connection connection)
     {
         _connection = connection;
     }
@@ -18,7 +19,9 @@ public class DepartamentoRepository
         using var connection = _connection.GetConnection();
 
         SqlCommand command = new("SELECT * FROM Departamentos WHERE esta_activo = 1", connection);
+
         connection.Open();
+
         SqlDataReader reader = command.ExecuteReader();
 
         while(reader.Read())
@@ -36,8 +39,11 @@ public class DepartamentoRepository
         using var connection = _connection.GetConnection();
 
         SqlCommand command = new("SELECT * FROM Departamentos WHERE Id = @Id AND esta_activo = 1", connection);
+
         command.Parameters.AddWithValue("@Id", id);
+        
         connection.Open();
+        
         SqlDataReader reader = command.ExecuteReader();
 
         if(reader.Read())
@@ -53,13 +59,16 @@ public class DepartamentoRepository
         return null;
     }
 
-    public void Add(Departamento departamento)
+    public void Save(Departamento departamento)
     {
         using var connection = _connection.GetConnection();
 
-        SqlCommand command = new("INSERT INTO Departamentos (nombre) VALUES (@Nombre)", connection);
+        using SqlCommand command = new("INSERT INTO Departamentos (nombre) VALUES (@Nombre)", connection);
+
         command.Parameters.AddWithValue("@Nombre", departamento.Nombre);
+        
         connection.Open();
+        
         command.ExecuteNonQuery();
     }
 
@@ -67,10 +76,13 @@ public class DepartamentoRepository
     {
         using var connection = _connection.GetConnection();
 
-        SqlCommand command = new("UPDATE Departamentos SET nombre = @Nombre WHERE Id = @Id AND esta_activo = 1", connection);
+        using SqlCommand command = new("UPDATE Departamentos SET nombre = @Nombre WHERE Id = @Id AND esta_activo = 1", connection);
+        
         command.Parameters.AddWithValue("@Nombre", departamento.Nombre);
         command.Parameters.AddWithValue("@Id", departamento.Id);
+        
         connection.Open();
+        
         command.ExecuteNonQuery();
     }
 
@@ -79,8 +91,11 @@ public class DepartamentoRepository
         using var connection = _connection.GetConnection();
 
         SqlCommand command = new("UPDATE Departamentos SET esta_activo = 0 WHERE Id = @Id AND esta_activo = 1", connection);
+        
         command.Parameters.AddWithValue("@Id", id);
+        
         connection.Open();
+        
         command.ExecuteNonQuery();
     }
 }

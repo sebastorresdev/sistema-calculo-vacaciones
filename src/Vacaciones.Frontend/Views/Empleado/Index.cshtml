@@ -1,8 +1,8 @@
-@model IEnumerable<Vacaciones.Frontend.Models.Departamento.DepartamentoViewModel>
+﻿@model IEnumerable<Vacaciones.Frontend.Models.Empleado.EmpleadoViewModel>
 
 
 @{
-    ViewData["Title"] = "Lista de Departamentos";
+    ViewData["Title"] = "Lista de Empleados";
 }
 
 <div class="container mt-5">
@@ -10,12 +10,12 @@
     <div class="row justify-content-between align-items-center mb-4">
         <div class="col-lg-8">
             <h1 class="display-6 fw-bold text-primary">@ViewData["Title"]</h1>
-            <p class="text-muted">Consulta y administra los departamentos disponibles</p>
+            <p class="text-muted">Consulta y administra los empleados disponibles</p>
         </div>
         <div class="col-lg-4 text-end">
             <!-- Botón para crear un nuevo departamento -->
             <a asp-action="Create" class="btn btn-success btn-lg">
-                <i class="fas fa-plus-circle"></i> Nuevo Departamento
+                <i class="fas fa-plus-circle"></i> Nuevo Empleado
             </a>
         </div>
     </div>
@@ -23,7 +23,7 @@
     <!-- Tabla de departamentos -->
     <div class="card shadow-lg border-0">
         <div class="card-header bg-primary text-white">
-            <h4 class="mb-0"><i class="fas fa-table"></i> Departamentos</h4>
+            <h4 class="mb-0"><i class="fas fa-table"></i> Empleado</h4>
         </div>
         <div class="card-body">
             <table id="datatablesSimple" class="table table-striped table-hover align-middle">
@@ -31,22 +31,32 @@
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Fecha Ingreso</th>
+                        <th>Correo</th>
+                        <th>Departamento</th>
+                        <th>Tipo Empleado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var departamento in Model)
+                    @foreach (var empleado in Model)
                     {
                         <tr>
-                            <td>@departamento.Id</td>
-                            <td>@departamento.Nombre</td>
+                            <td>@empleado.Id</td>
+                            <td>@empleado.NombreCompleto</td>
+                            <td>@empleado.FechaNacimiento</td>
+                            <td>@empleado.FechaIngreso</td>
+                            <td>@empleado.CorreoElectronico</td>
+                            <td>@empleado.Departamento</td>
+                            <td>@empleado.TipoEmpleado</td>
                             <td>
                                 <!-- Botón para editar -->
-                                <a asp-action="Edit" asp-route-id="@departamento.Id" class="btn btn-warning btn-sm me-2">
+                                <a asp-action="Edit" asp-route-id="@empleado.Id" class="btn btn-warning btn-sm me-2">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
                                 <!-- Botón para eliminar con confirmación -->
-                                <form asp-action="Delete" asp-route-id="@departamento.Id" method="post" style="display:inline;" onsubmit="return confirmDelete(event, this);">
+                                <form asp-action="Delete" asp-route-id="@empleado.Id" method="post" style="display:inline;" onsubmit="return confirmDelete(event, this);">
                                     <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash-alt"></i> Eliminar
                                     </button>

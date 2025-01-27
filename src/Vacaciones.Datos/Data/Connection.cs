@@ -1,10 +1,9 @@
-using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
 namespace Vacaciones.Datos.Data;
 
-public class VacacionesDbConnection
+public class Connection
 {
     private readonly string _connectionString;
 
@@ -12,7 +11,8 @@ public class VacacionesDbConnection
     /// Constructor que inicializa la cadena de conexión desde IConfiguration.
     /// </summary>
     /// <param name="configuration">Instancia de IConfiguration para leer la configuración.</param>
-    public VacacionesDbConnection(IConfiguration configuration) => _connectionString = configuration.GetConnectionString("DefaultConnection")
+    public Connection(IConfiguration configuration) 
+        => _connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new ArgumentNullException("No se encontro la cadena de conexión");
 
     /// <summary>
